@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit;
 public class Image implements Picture {
     private String name;
 
-    Image(String name) {
+    public Image(String name) {
         this.name = name;
 
         try {
