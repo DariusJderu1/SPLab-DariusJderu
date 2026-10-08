@@ -2,7 +2,7 @@ package sp.self.learning.model;
 
 import java.util.concurrent.TimeUnit;
 
-public class Image implements Element {
+public class Image implements Picture {
     private String name;
 
     Image(String name) {
