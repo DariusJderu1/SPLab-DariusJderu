@@ -1,10 +1,18 @@
 package sp.self.learning.model;
 
-public class Image implements Element {
+import java.util.concurrent.TimeUnit;
+
+public class Image implements Picture {
     private String name;
 
     public Image(String name) {
         this.name = name;
+
+        try {
+            TimeUnit.SECONDS.sleep(5);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
