@@ -8,6 +8,7 @@ import sp.self.learning.model.*;
 public class Application {
 
 	public static void main(String[] args) {
+		// Lab 1
 //		Book noapteBuna = new Book("Noapte buna, copii!");
 //		Author rpGheo = new Author("Radu Pavel Gheo");
 //		noapteBuna.addAuthor(rpGheo);
@@ -33,6 +34,7 @@ public class Application {
 //
 //		noapteBuna.print();
 
+		// Lab 2 - Strategy
 		Section cap1 = new Section("Capitolul 1");
 		Paragraph p1 = new Paragraph("Paragraph 1");
 		cap1.add(p1);
