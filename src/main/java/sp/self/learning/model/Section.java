@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Section implements Element {
-    private String title;
-    private List<Element> children;
+    protected String title;
+    protected List<Element> children;
 
     public Section(String title) {
         this.title = title;

@@ -3,15 +3,12 @@ package sp.self.learning.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Book {
-    private String title;
+public class Book extends Section {
     private List<Author> authors;
-    private List<Element> content;
 
     public Book(String title) {
-        this.title = title;
+        super(title);
         authors = new ArrayList<>();
-        content = new ArrayList<>();
     }
 
     public void addAuthor(Author author) {
@@ -19,9 +16,10 @@ public class Book {
     }
 
     public void addContent(Element element) {
-        content.add(element);
+        add(element);
     }
 
+    @Override
     public void print() {
         System.out.println("Book: " + title);
         System.out.println("Authors:");
@@ -29,7 +27,7 @@ public class Book {
         for(Author author : authors)
             author.print();
 
-        for(Element element : content)
+        for(Element element : children)
             element.print();
     }
 }
