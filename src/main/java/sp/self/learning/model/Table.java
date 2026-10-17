@@ -12,8 +12,7 @@ public class Table implements Element {
         visitor.visit(this);
     }
 
-    @Override
-    public void print() {
+    public void render() {
         System.out.println("Table with title: " + title);
     }
 }

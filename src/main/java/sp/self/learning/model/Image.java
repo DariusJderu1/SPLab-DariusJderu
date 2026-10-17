@@ -20,8 +20,7 @@ public class Image implements Picture {
         visitor.visit(this);
     }
 
-    @Override
-    public void print() {
+    public void render() {
         System.out.println("Image with name: " + name);
     }
 }

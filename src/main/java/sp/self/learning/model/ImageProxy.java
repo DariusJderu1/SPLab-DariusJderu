@@ -20,8 +20,7 @@ public class ImageProxy implements Picture {
         visitor.visit(this);
     }
 
-    @Override
-    public void print() {
-        loadImage().print();
+    public void render() {
+        loadImage().render();
     }
 }

@@ -24,19 +24,15 @@ public class Section implements Element {
         return children.get(index);
     }
 
+    public void render() {
+        System.out.println(title);
+    }
+
     @Override
     public void accept(Visitor visitor) {
         visitor.visit(this);
 
         for(Element child : children)
             child.accept(visitor);
-    }
-
-    @Override
-    public void print() {
-        System.out.println(title);
-
-        for(Element child : children)
-            child.print();
     }
 }

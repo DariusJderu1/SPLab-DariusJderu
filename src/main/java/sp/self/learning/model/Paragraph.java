@@ -21,8 +21,7 @@ public class Paragraph implements Element {
         visitor.visit(this);
     }
 
-    @Override
-    public void print() {
+    public void render() {
         if(alignStrategy == null) {
             System.out.println("Paragraph: " + text);
             return;
