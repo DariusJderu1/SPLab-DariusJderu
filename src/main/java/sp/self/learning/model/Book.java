@@ -20,6 +20,14 @@ public class Book extends Section {
     }
 
     @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
+
+        for(Element element : children)
+            element.accept(visitor);
+    }
+
+    @Override
     public void print() {
         System.out.println("Book: " + title);
         System.out.println("Authors:");

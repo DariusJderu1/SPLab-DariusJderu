@@ -16,6 +16,11 @@ public class ImageProxy implements Picture {
     }
 
     @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
+    }
+
+    @Override
     public void print() {
         loadImage().print();
     }
