@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Section implements Element {
-    private String title;
-    private List<Element> children;
+    protected String title;
+    protected List<Element> children;
 
     public Section(String title) {
         this.title = title;
@@ -24,11 +24,15 @@ public class Section implements Element {
         return children.get(index);
     }
 
-    @Override
-    public void print() {
+    public void render() {
         System.out.println(title);
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
 
         for(Element child : children)
-            child.print();
+            child.accept(visitor);
     }
 }

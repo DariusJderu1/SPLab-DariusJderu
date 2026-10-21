@@ -17,7 +17,11 @@ public class Paragraph implements Element {
     }
 
     @Override
-    public void print() {
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
+    }
+
+    public void render() {
         if(alignStrategy == null) {
             System.out.println("Paragraph: " + text);
             return;
