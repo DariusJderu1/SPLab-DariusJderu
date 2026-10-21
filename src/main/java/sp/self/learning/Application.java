@@ -2,6 +2,10 @@ package sp.self.learning;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+import sp.self.learning.difexamples.ClientComponent;
+import sp.self.learning.difexamples.SingletonComponent;
+import sp.self.learning.difexamples.TransientComponent;
 import sp.self.learning.model.*;
 
 @SpringBootApplication
@@ -125,23 +129,46 @@ public class Application {
 
 
 		// Lab 3 - Visitor - book statistics
-		Section cap1 = new Section("Capitolul 1");
-		Paragraph p1 = new Paragraph("Paragraph 1");
-		cap1.add(p1);
-		Paragraph p2 = new Paragraph("Paragraph 2");
-		cap1.add(p2);
-		Paragraph p3 = new Paragraph("Paragraph 3");
-		cap1.add(p3);
-		Paragraph p4 = new Paragraph("Paragraph 4");
-		cap1.add(p4);
+//		Section cap1 = new Section("Capitolul 1");
+//		Paragraph p1 = new Paragraph("Paragraph 1");
+//		cap1.add(p1);
+//		Paragraph p2 = new Paragraph("Paragraph 2");
+//		cap1.add(p2);
+//		Paragraph p3 = new Paragraph("Paragraph 3");
+//		cap1.add(p3);
+//		Paragraph p4 = new Paragraph("Paragraph 4");
+//		cap1.add(p4);
+//
+//		cap1.add(new ImageProxy("ImageOne"));
+//		cap1.add(new Image("ImageTwo"));
+//		cap1.add(new Paragraph("Some text"));
+//		cap1.add(new Table("Table 1"));
+//
+//		BookStatistics stats = new BookStatistics();
+//		cap1.accept(stats);
+//		stats.printStatistics();
 
-		cap1.add(new ImageProxy("ImageOne"));
-		cap1.add(new Image("ImageTwo"));
-		cap1.add(new Paragraph("Some text"));
-		cap1.add(new Table("Table 1"));
 
-		BookStatistics stats = new BookStatistics();
-		cap1.accept(stats);
-		stats.printStatistics();
+		// Lab 4 - Dependency Injection - bean scopes and constructor injection
+		// Starts Spring and gets the container that manages our components.
+		ApplicationContext context = SpringApplication.run(Application.class, args);
+
+		// Prototype scope: each request returns a new instance.
+		TransientComponent transientBean = context.getBean(TransientComponent.class);
+		transientBean.operation();
+		transientBean = context.getBean(TransientComponent.class);
+		transientBean.operation();
+
+		// Singleton scope: both requests return the same instance.
+		SingletonComponent singletonBean = context.getBean(SingletonComponent.class);
+		singletonBean.operation();
+		singletonBean = context.getBean(SingletonComponent.class);
+		singletonBean.operation();
+
+		// Looks up the client by type and name; its scope determines whether the instance is reused.
+		ClientComponent c = context.getBean(ClientComponent.class);
+		c.operation();
+		c = (ClientComponent) context.getBean("clientComponent");
+		c.operation();
 	}
 }

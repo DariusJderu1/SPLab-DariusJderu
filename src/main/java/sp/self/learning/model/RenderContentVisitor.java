@@ -12,6 +12,11 @@ public class RenderContentVisitor implements Visitor {
     }
 
     @Override
+    public void visit(TableOfContents tableOfContents) {
+        tableOfContents.render();
+    }
+
+    @Override
     public void visit(Paragraph paragraph) {
         paragraph.render();
     }

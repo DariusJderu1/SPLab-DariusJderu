@@ -5,6 +5,8 @@ public interface Visitor {
 
     void visit(Section section);
 
+    void visit(TableOfContents tableOfContents);
+
     void visit(Paragraph paragraph);
 
     void visit(Image image);

@@ -14,6 +14,10 @@ public class BookStatistics implements Visitor {
     }
 
     @Override
+    public void visit(TableOfContents tableOfContents) {
+    }
+
+    @Override
     public void visit(Paragraph paragraph) {
         numberOfParagraphs++;
     }
