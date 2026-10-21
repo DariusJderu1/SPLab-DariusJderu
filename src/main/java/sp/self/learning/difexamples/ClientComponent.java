@@ -1,10 +1,15 @@
 package sp.self.learning.difexamples;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-// Marks this class for component scanning; its bean uses singleton scope by default.
+// Marks this class for component scanning so Spring can create and manage its bean.
 @Component
+// Creates a new client for each request to the container, including each injection.
+// Remove this annotation and restart to compare with the default singleton scope.
+@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class ClientComponent {
     private final TransientComponent tc;
     private final SingletonComponent sc;

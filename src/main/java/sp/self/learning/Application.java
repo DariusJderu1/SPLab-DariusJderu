@@ -165,7 +165,7 @@ public class Application {
 		singletonBean = context.getBean(SingletonComponent.class);
 		singletonBean.operation();
 
-		// Both lookups return the same client with the dependencies injected at creation.
+		// Looks up the client by type and name; its scope determines whether the instance is reused.
 		ClientComponent c = context.getBean(ClientComponent.class);
 		c.operation();
 		c = (ClientComponent) context.getBean("clientComponent");
