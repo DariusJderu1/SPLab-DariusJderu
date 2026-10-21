@@ -12,6 +12,10 @@ public class Section implements Element {
         children = new ArrayList<>();
     }
 
+    public String getTitle() {
+        return title;
+    }
+
     public void add(Element element) {
         children.add(element);
     }
