@@ -3,7 +3,7 @@ package sp.self.learning.persistence.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TableOfContents implements Element {
+public class TableOfContents extends BaseElement {
     private List<String> entries;
 
     public TableOfContents() {

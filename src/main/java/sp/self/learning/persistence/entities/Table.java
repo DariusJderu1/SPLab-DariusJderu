@@ -1,6 +1,6 @@
 package sp.self.learning.persistence.entities;
 
-public class Table implements Element {
+public class Table extends BaseElement {
     private String title;
 
     public Table(String title) {

@@ -1,6 +1,6 @@
 package sp.self.learning.persistence.entities;
 
-public class Paragraph implements Element {
+public class Paragraph extends BaseElement {
     private String text;
     private AlignStrategy alignStrategy;
 

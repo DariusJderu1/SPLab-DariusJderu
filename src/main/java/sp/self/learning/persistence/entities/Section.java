@@ -3,7 +3,7 @@ package sp.self.learning.persistence.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Section implements Element {
+public class Section extends BaseElement {
     protected String title;
     protected List<Element> children;
 

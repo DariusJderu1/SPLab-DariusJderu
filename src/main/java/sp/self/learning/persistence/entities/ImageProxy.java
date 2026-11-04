@@ -1,6 +1,6 @@
 package sp.self.learning.persistence.entities;
 
-public class ImageProxy implements Picture {
+public class ImageProxy extends BaseElement implements Picture {
     private String name;
     private Image realImage;
 

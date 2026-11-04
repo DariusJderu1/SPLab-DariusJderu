@@ -2,7 +2,7 @@ package sp.self.learning.persistence.entities;
 
 import java.util.concurrent.TimeUnit;
 
-public class Image implements Picture {
+public class Image extends BaseElement implements Picture {
     private String name;
 
     public Image(String name) {
