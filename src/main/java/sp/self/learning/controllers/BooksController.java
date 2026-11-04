@@ -1,5 +1,6 @@
 package sp.self.learning.controllers;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,7 @@ import sp.self.learning.commands.GetAllBooksCommand;
 import sp.self.learning.commands.GetBookByIdCommand;
 import sp.self.learning.commands.UpdateBookCommand;
 import sp.self.learning.persistence.BooksRepository;
+import sp.self.learning.persistence.entities.Author;
 import sp.self.learning.persistence.entities.Book;
 
 import java.util.List;
@@ -44,6 +46,8 @@ public class BooksController
         return ResponseEntity.status(HttpStatus.CREATED).body(new CreateBookResponse(book.getId()));
     }
 
+    // Keep the transaction open while the response reads the book's authors
+    @Transactional(readOnly = true)
     @GetMapping("/books")
     public List<BookResponse> getAllBooks()
     {
@@ -52,6 +56,7 @@ public class BooksController
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     @GetMapping("/books/{id}")
     public ResponseEntity<BookResponse> getBookById(@PathVariable("id") Integer id)
     {
@@ -88,7 +93,11 @@ public class BooksController
 
     private BookResponse toBookResponse(Book book)
     {
-        return new BookResponse(book.getId(), book.getTitle());
+        List<String> authorNames = book.getAuthors().stream()
+                .map(Author::getName)
+                .toList();
+
+        return new BookResponse(book.getId(), book.getTitle(), authorNames);
     }
 
     public record CreateBookRequest(String title)
@@ -103,7 +112,8 @@ public class BooksController
     {
     }
 
-    public record BookResponse(Integer id, String title)
+    // Expose authorNames as authors in the JSON response
+    public record BookResponse(Integer id, String title, @JsonProperty("authors") List<String> authorNames)
     {
     }
 }

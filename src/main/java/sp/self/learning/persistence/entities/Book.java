@@ -37,6 +37,11 @@ public class Book extends Section {
         authors.add(author);
     }
 
+    public List<Author> getAuthors()
+    {
+        return List.copyOf(authors);
+    }
+
     public void addContent(Element element) {
         add(element);
     }

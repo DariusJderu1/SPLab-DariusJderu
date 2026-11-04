@@ -30,6 +30,11 @@ public class Author {
     }
 
 
+    public String getName()
+    {
+        return name;
+    }
+
     public void print() {
         System.out.println("Author: " + name);
     }
