@@ -18,7 +18,7 @@ import sp.self.learning.commands.DeleteBookCommand;
 import sp.self.learning.commands.GetAllBooksCommand;
 import sp.self.learning.commands.GetBookByIdCommand;
 import sp.self.learning.commands.UpdateBookCommand;
-import sp.self.learning.persistence.BooksRepository;
+import sp.self.learning.persistence.CrudRepository;
 import sp.self.learning.persistence.entities.Author;
 import sp.self.learning.persistence.entities.Book;
 
@@ -29,7 +29,7 @@ public class BooksController
 {
     private final CommandContext commandContext;
 
-    public BooksController(BooksRepository booksRepository)
+    public BooksController(CrudRepository<Book, Integer> booksRepository)
     {
         // Spring injects the repository and the context passes it to commands
         commandContext = new CommandContext(booksRepository);
