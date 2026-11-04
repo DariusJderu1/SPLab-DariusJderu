@@ -18,4 +18,9 @@ public abstract class BaseElement implements Element
     @GeneratedValue
     @Column(name = "id")
     private Integer id;
+
+    public Integer getId()
+    {
+        return id;
+    }
 }
