@@ -42,6 +42,11 @@ public class Section extends BaseElement {
         return title;
     }
 
+    public void setTitle(String title)
+    {
+        this.title = title;
+    }
+
     public void add(Element element) {
         children.add(element);
     }
