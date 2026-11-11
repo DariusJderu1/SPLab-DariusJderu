@@ -18,6 +18,7 @@ import sp.self.learning.commands.DeleteBookCommand;
 import sp.self.learning.commands.GetAllBooksCommand;
 import sp.self.learning.commands.GetBookByIdCommand;
 import sp.self.learning.commands.UpdateBookCommand;
+import sp.self.learning.observers.AllBooksSubject;
 import sp.self.learning.persistence.CrudRepository;
 import sp.self.learning.persistence.entities.Author;
 import sp.self.learning.persistence.entities.Book;
@@ -28,10 +29,12 @@ import java.util.List;
 public class BooksController
 {
     private final CommandContext commandContext;
+    private final AllBooksSubject allBooksSubject;
 
-    public BooksController(CrudRepository<Book, Integer> booksRepository) {
+    public BooksController(CrudRepository<Book, Integer> booksRepository, AllBooksSubject allBooksSubject) {
         // Spring injects the repository and the context passes it to commands
         commandContext = new CommandContext(booksRepository);
+        this.allBooksSubject = allBooksSubject;
     }
 
     @PostMapping("/books")
@@ -39,6 +42,9 @@ public class BooksController
         validateTitle(request.title());
 
         Book book = new CreateBookCommand().execute(commandContext, request.title());
+
+        // Notify connected clients after the book has been saved.
+        allBooksSubject.add(book);
 
         // Return the generated id in the JSON response
         return ResponseEntity.status(HttpStatus.CREATED).body(new CreateBookResponse(book.getId()));
