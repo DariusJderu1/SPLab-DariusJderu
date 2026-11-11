@@ -18,6 +18,7 @@ import sp.self.learning.commands.DeleteBookCommand;
 import sp.self.learning.commands.GetAllBooksCommand;
 import sp.self.learning.commands.GetBookByIdCommand;
 import sp.self.learning.commands.UpdateBookCommand;
+import sp.self.learning.observers.AllBooksSubject;
 import sp.self.learning.persistence.CrudRepository;
 import sp.self.learning.persistence.entities.Author;
 import sp.self.learning.persistence.entities.Book;
@@ -28,19 +29,22 @@ import java.util.List;
 public class BooksController
 {
     private final CommandContext commandContext;
+    private final AllBooksSubject allBooksSubject;
 
-    public BooksController(CrudRepository<Book, Integer> booksRepository)
-    {
+    public BooksController(CrudRepository<Book, Integer> booksRepository, AllBooksSubject allBooksSubject) {
         // Spring injects the repository and the context passes it to commands
         commandContext = new CommandContext(booksRepository);
+        this.allBooksSubject = allBooksSubject;
     }
 
     @PostMapping("/books")
-    public ResponseEntity<CreateBookResponse> createBook(@RequestBody CreateBookRequest request)
-    {
+    public ResponseEntity<CreateBookResponse> createBook(@RequestBody CreateBookRequest request) {
         validateTitle(request.title());
 
         Book book = new CreateBookCommand().execute(commandContext, request.title());
+
+        // Notify connected clients after the book has been saved.
+        allBooksSubject.add(book);
 
         // Return the generated id in the JSON response
         return ResponseEntity.status(HttpStatus.CREATED).body(new CreateBookResponse(book.getId()));
@@ -49,8 +53,7 @@ public class BooksController
     // Keep the transaction open while the response reads the book's authors
     @Transactional(readOnly = true)
     @GetMapping("/books")
-    public List<BookResponse> getAllBooks()
-    {
+    public List<BookResponse> getAllBooks() {
         return new GetAllBooksCommand().execute(commandContext).stream()
                 .map(this::toBookResponse)
                 .toList();
@@ -58,8 +61,7 @@ public class BooksController
 
     @Transactional(readOnly = true)
     @GetMapping("/books/{id}")
-    public ResponseEntity<BookResponse> getBookById(@PathVariable("id") Integer id)
-    {
+    public ResponseEntity<BookResponse> getBookById(@PathVariable("id") Integer id) {
         return ResponseEntity.of(new GetBookByIdCommand().execute(commandContext, id)
                 .map(this::toBookResponse));
     }
@@ -67,8 +69,7 @@ public class BooksController
     @Transactional
     @PutMapping("/books/{id}")
     public ResponseEntity<BookResponse> updateBook(@PathVariable("id") Integer id,
-                                                   @RequestBody UpdateBookRequest request)
-    {
+                                                   @RequestBody UpdateBookRequest request) {
         validateTitle(request.title());
 
         return ResponseEntity.of(new UpdateBookCommand().execute(commandContext, id, request.title())
@@ -77,22 +78,19 @@ public class BooksController
 
     @Transactional
     @DeleteMapping("/books/{id}")
-    public ResponseEntity<Void> deleteBook(@PathVariable("id") Integer id)
-    {
+    public ResponseEntity<Void> deleteBook(@PathVariable("id") Integer id) {
         if(new DeleteBookCommand().execute(commandContext, id))
             return ResponseEntity.noContent().build();
 
         return ResponseEntity.notFound().build();
     }
 
-    private void validateTitle(String title)
-    {
+    private void validateTitle(String title) {
         if(title == null || title.isBlank())
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Book title is required");
     }
 
-    private BookResponse toBookResponse(Book book)
-    {
+    private BookResponse toBookResponse(Book book) {
         List<String> authorNames = book.getAuthors().stream()
                 .map(Author::getName)
                 .toList();
@@ -100,20 +98,16 @@ public class BooksController
         return new BookResponse(book.getId(), book.getTitle(), authorNames);
     }
 
-    public record CreateBookRequest(String title)
-    {
+    public record CreateBookRequest(String title) {
     }
 
-    public record CreateBookResponse(Integer id)
-    {
+    public record CreateBookResponse(Integer id) {
     }
 
-    public record UpdateBookRequest(String title)
-    {
+    public record UpdateBookRequest(String title) {
     }
 
     // Expose authorNames as authors in the JSON response
-    public record BookResponse(Integer id, String title, @JsonProperty("authors") List<String> authorNames)
-    {
+    public record BookResponse(Integer id, String title, @JsonProperty("authors") List<String> authorNames) {
     }
 }
